@@ -28,7 +28,44 @@ claude mcp add -s user taskbridge -- npx -y mstodo-bridge
 
 > 看看我的清单 · 把 X 加到"科研学术",周五截止 · 搜含"论文"的任务 · 完成第 3 条
 
-15 个工具覆盖:登录(`login_status` / `start_login` / `paste_callback`)、清单增删、任务增删改查、跨清单移动、跨清单搜索。
+## MCP 工具(15 个)
+
+**账户与登录**
+
+| 工具 | 参数 | 说明 |
+|---|---|---|
+| `login_status` | — | 是否已连接、登录是否进行中及剩余秒数 |
+| `start_login` | — | 开始登录:返回授权链接并在本机随机端口挂回调监听 |
+| `paste_callback` | `url` | 粘贴授权后地址栏完整 URL,完成令牌交换(远程/无回调场景) |
+| `list_providers` | — | 列出 provider 及其连接状态、能力声明 |
+
+**清单**
+
+| 工具 | 参数 | 说明 |
+|---|---|---|
+| `list_task_lists` | `provider?` | 列出全部清单 |
+| `create_task_list` | `name`, `provider?` | 新建清单 |
+| `delete_task_list` | `listId`, `provider?` | 删除清单及其任务(不可恢复) |
+
+**任务读取**
+
+| 工具 | 参数 | 说明 |
+|---|---|---|
+| `list_tasks` | `listId?`, `includeCompleted?`, `cursor?` | 列任务;省略 `listId` 则跨全部清单聚合,`cursor` 翻页 |
+| `get_task` | `listId`, `taskId` | 取单条任务详情 |
+| `search_tasks` | `query`, `provider?` | 跨清单子串搜索标题与备注 |
+
+**任务写入**
+
+| 工具 | 参数 | 说明 |
+|---|---|---|
+| `create_task` | `title`, `listId?`, `notes?`, `dueDate?`, `parentTaskId?` | 新建;`dueDate` 接受 ISO 日期或 RFC 3339;省略清单则入默认清单 |
+| `update_task` | `listId`, `taskId`, `title?`, `notes?`, `dueDate?`, `status?` | 局部更新;`dueDate: null` 清除截止日;`status` 为 `completed` / `needsAction` |
+| `complete_task` | `listId`, `taskId` | 标记完成 |
+| `delete_task` | `listId`, `taskId` | 删除任务 |
+| `move_task_between_lists` | `fromListId`, `taskId`, `toListId` | 跨清单移动(目标清单重建原件后删除源任务) |
+
+> 标注 `provider?` 的参数在单账户模式下可省略。
 
 ## Web 管理台(可选)
 
