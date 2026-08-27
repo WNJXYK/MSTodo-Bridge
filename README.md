@@ -2,17 +2,20 @@
 
 [![npm](https://img.shields.io/npm/v/mstodo-bridge)](https://www.npmjs.com/package/mstodo-bridge)
 [![license](https://img.shields.io/npm/l/mstodo-bridge)](./LICENSE)
-[![tests](https://img.shields.io/badge/tests-40%20passing-brightgreen)]()
 
 **在 Claude 里直接管理 Microsoft To Do。** 一个 MCP 服务器,零配置安装,登录就在对话里完成。
 
-## 快速开始
+## 安装
 
-**Claude Code**(一行加入,全局生效):
+### 1. 安装到 Claude Code
 
 ```bash
 claude mcp add -s user taskbridge -- npx -y mstodo-bridge
 ```
+
+`-s user` 表示全局生效(所有项目可用)。完成后重启 Claude Code 会话。
+
+### 2. 或写入 MCP 配置文件
 
 **Claude Desktop**:编辑配置文件(Windows `%APPDATA%\Claude\claude_desktop_config.json`,macOS `~/Library/Application Support/Claude/claude_desktop_config.json`):
 
@@ -27,27 +30,41 @@ claude mcp add -s user taskbridge -- npx -y mstodo-bridge
 }
 ```
 
-**Cursor / 其它 MCP 客户端**:同样以 `npx -y mstodo-bridge` 作为 stdio 命令添加。
+**Cursor / 其它 MCP 客户端**:同样以 `npx -y mstodo-bridge` 作为 stdio 命令添加。保存后重启客户端。
 
-重启客户端即完成安装 —— 不需要注册任何 OAuth 应用,也不需要打开网页控制台。
+### 3. 或启动一个 Web 服务
 
-## 特性
+不需要挂在某个客户端下,也可以独立跑成带管理台的服务:
 
-- **对话内登录** —— 无需注册 OAuth 应用、无需网页控制台:Claude 调用 `login` 给你一条链接,点一下同意即完成;刷新令牌自动续期
-- **远程可连** —— 浏览器回不到服务器(容器/云部署)时,把地址栏 URL 粘贴回对话,还是同一个 `login` 工具完成交换
-- **内置公共客户端** —— OAuth 客户端 ID 随包分发(与 VS Code、Azure CLI 同模式),个人账户开箱即用
-- **双运行模式** —— stdio 供本地客户端直连;`--http` 提供 Bearer 端点与 Web 管理台,适配 Hugging Face Spaces 等托管环境
-- **国内友好** —— 内置 http/https 出站代理配置(含连通性实测),`login.microsoftonline.com` 直连不稳也能用
+```bash
+npx mstodo-bridge --http        # 管理台 http://127.0.0.1:46377/admin
+```
 
-## 使用
+首次启动打印**管理密码**与 **MCP Bearer 令牌**(仅显示一次)。其它客户端即可通过 `http://<host>:46377/mcp`(Bearer 鉴权)远程接入;部署到服务器/Hugging Face Spaces 见下文「部署」。
 
-重启客户端后,直接说:
+## 登录
+
+### 方式一:在 Claude 里(推荐)
+
+重启客户端后,直接对 Claude 说:
 
 > 帮我连接 Microsoft To Do
 
-然后就可以自然语言操作任务:
+Claude 会调用 `login` 工具并给你一条授权链接 → 浏览器打开 → 用微软个人账户同意 → 自动回连完成。之后就可以自然语言操作:
 
 > 看看我的清单 · 把 X 加到"科研学术",周五截止 · 搜含"论文"的任务 · 完成第 3 条
+
+### 方式二:通过 Web 管理台
+
+```bash
+npx mstodo-bridge --http --open
+```
+
+1. 浏览器打开管理台,输入启动时打印的管理密码登录;
+2. 在 **Microsoft To Do** 卡片点「连接账户」,浏览器完成授权后自动跳回;
+3. **远程环境**(浏览器与服务器不在同一台机器)授权后会跳到 `localhost` 并报错 —— 这是预期行为,把地址栏的完整 URL 粘贴进卡片的「完成连接」输入框即可。
+
+两种方式产生的凭据完全相同(`~/.mstodo-bridge`),混用随意。
 
 ## MCP 工具(14 个)
 
@@ -87,27 +104,20 @@ claude mcp add -s user taskbridge -- npx -y mstodo-bridge
 
 > 标注 `provider?` 的参数在单账户模式下可省略。
 
-## Web 管理台(可选)
-
-```bash
-npx mstodo-bridge --http        # http://127.0.0.1:46377/admin
-```
-
-连接账户、轮换 MCP Bearer 令牌、配置代理、查看内存/CPU —— 首次启动打印管理密码与令牌(仅显示一次,均只存 scrypt 哈希)。
-
 ## 部署
 
 ```bash
 PORT=7860 HOST=0.0.0.0 PUBLIC_BASE_URL=https://<user>-<space>.hf.space npx mstodo-bridge --http
 ```
 
-| 环境变量 | 说明 |
+| 环境变量 / 参数 | 说明 |
 |---|---|
 | `ADMIN_PASSWORD` | 管理台密码(缺省自动生成) |
 | `PUBLIC_BASE_URL` | 对外地址,决定授权回调的展示与跳转 |
-| `TASKBRIDGE_PROXY` / `HTTPS_PROXY` | 出站代理(仅 http/https) |
+| `TASKBRIDGE_PROXY` / `HTTPS_PROXY` | 出站代理(仅 http/https;SOCKS 请填代理软件混合端口) |
 | `TASKBRIDGE_MS_CLIENT_ID` | 覆盖内置 OAuth 客户端 ID |
 | `TASKBRIDGE_CONFIG_DIR` | 凭据目录(默认 `~/.mstodo-bridge`) |
+| `--port` / `PORT` | 监听端口(默认 46377;托管平台用 `PORT`) |
 
 ## 安全
 
