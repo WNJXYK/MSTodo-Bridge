@@ -68,7 +68,7 @@ export function registerTaskTools(server: McpServer): Map<string, ManagedProvide
     'login_status',
     {
       description:
-        'Check whether Microsoft To Do is connected. Use before task tools; if not connected, call start_login.',
+        'Check whether Microsoft To Do is connected. Use before task tools; if not connected, call login.',
       inputSchema: {},
     },
     async () =>
