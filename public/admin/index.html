@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>taskbridge-mcp · 控制台</title>
+  <link rel="stylesheet" href="/admin/assets/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">taskbridge<span class="brand-dim">-mcp</span></span>
+    </div>
+    <div class="topbar-actions">
+      <button id="theme-toggle" type="button" aria-label="切换深浅主题">◐</button>
+      <form method="post" action="/admin/logout" class="inline-form">
+        <button type="submit" class="ghost">退出登录</button>
+      </form>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel" aria-labelledby="providers-title">
+      <div class="panel-head">
+        <h2 id="providers-title">任务源</h2>
+        <span class="panel-sub">连接后，MCP 客户端即可读写这些账户的任务</span>
+      </div>
+      <div class="bridge-row solo" id="bridge-row">
+        <article class="provider-card" data-provider="mstodo">
+          <header>
+            <h3>Microsoft To Do</h3>
+            <span class="status-chip" data-role="status">未知</span>
+          </header>
+          <p class="provider-desc">Outlook / Microsoft 365 个人任务。内置公共客户端应用，开箱即可连接。</p>
+          <details class="cred-details">
+            <summary>高级：使用自己的 Entra 应用注册</summary>
+            <form data-role="cred-form" class="cred-form">
+              <label>Client ID <input name="clientId" type="text" autocomplete="off" placeholder="（留空使用内置应用）"></label>
+              <button type="submit" data-role="save-cred">保存覆盖配置</button>
+            </form>
+          </details>
+          <div class="provider-actions">
+            <button data-role="connect" class="primary">连接账户</button>
+            <button data-role="disconnect" class="danger ghost">断开</button>
+          </div>
+          <div class="paste-flow">
+            <details>
+              <summary>远程 / 无回调环境？粘贴登录后的地址栏链接</summary>
+              <p class="opt">在别的机器上打开浏览器完成授权后，Microsoft 会跳到 localhost 且页面报错 —— 复制那时地址栏的完整 URL 粘到这里。</p>
+              <form data-role="paste-form" class="cred-form">
+                <input name="callbackUrl" type="text" autocomplete="off" placeholder="http://localhost:46377/oauth/mstodo/callback?code=...&state=...">
+                <button type="submit">完成连接</button>
+              </form>
+            </details>
+          </div>
+          <p class="hint" data-role="hint"></p>
+        </article>
+      </div>
+      <p class="callback-note">回调地址：<code data-role="callback-note"></code></p>
+    </section>
+
+    <div class="side-col">
+      <section class="panel" aria-labelledby="token-title">
+        <div class="panel-head">
+          <h2 id="token-title">MCP 访问令牌</h2>
+        </div>
+        <p class="panel-sub">客户端在 <code>Authorization: Bearer …</code> 中使用。只显示一次，请立即保存。</p>
+        <div class="token-result" data-role="token-result" hidden>
+          <code data-role="token-value"></code>
+          <button data-role="copy-token" class="ghost">复制</button>
+        </div>
+        <button data-role="rotate-token" class="primary">生成新令牌</button>
+        <p class="hint">轮换后旧令牌立即失效，需更新所有 MCP 客户端。</p>
+      </section>
+
+      <section class="panel" aria-labelledby="proxy-title">
+        <div class="panel-head">
+          <h2 id="proxy-title">网络代理</h2>
+        </div>
+        <p class="panel-sub">访问 Microsoft / Google API 时经此代理转发，解决直连不可达的问题。仅支持 http/https 代理（SOCKS 端口不可用，请填代理软件的 HTTP/混合端口）。</p>
+        <form data-role="proxy-form" class="cred-form">
+          <label>代理地址
+            <input name="proxyUrl" type="text" autocomplete="off" placeholder="http://127.0.0.1:7890">
+          </label>
+          <div class="provider-actions">
+            <button type="submit" class="primary">保存</button>
+            <button type="button" data-role="proxy-test">测试连通</button>
+            <button type="button" data-role="proxy-clear" class="ghost">清除</button>
+          </div>
+        </form>
+        <dl class="metrics">
+          <dt>当前代理</dt><dd data-role="proxy-current">—</dd>
+          <dt>来源</dt><dd data-role="proxy-source">—</dd>
+        </dl>
+        <ul class="test-results" data-role="proxy-results" hidden></ul>
+        <p class="hint" data-role="proxy-hint"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="status-title">
+        <div class="panel-head">
+          <h2 id="status-title">运行状态</h2>
+          <button data-role="refresh" class="ghost">刷新</button>
+        </div>
+        <dl class="metrics" data-role="metrics">
+          <dt>运行时长</dt><dd data-metric="uptime">—</dd>
+          <dt>内存 (RSS)</dt><dd data-metric="rss">—</dd>
+          <dt>堆使用</dt><dd data-metric="heap">—</dd>
+          <dt>CPU</dt><dd data-metric="cpu">—</dd>
+          <dt>负载 (1m)</dt><dd data-metric="load">—</dd>
+          <dt>Node</dt><dd data-metric="node">—</dd>
+          <dt>平台</dt><dd data-metric="platform">—</dd>
+          <dt>外部地址</dt><dd data-metric="baseurl">—</dd>
+        </dl>
+      </section>
+    </div>
+  </main>
+
+  <div class="toast" data-role="toast" hidden></div>
+  <script src="/admin/assets/app.js"></script>
+</body>
+</html>
