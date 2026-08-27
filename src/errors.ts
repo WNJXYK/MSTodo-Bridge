@@ -37,7 +37,7 @@ export function toMcpError(err: unknown): { code: string; message: string } {
   if (err instanceof AuthError) {
     return {
       code: 'auth_required',
-      message: `[${err.providerId}] ${err.message} 请调用 start_login 工具开始登录流程。`,
+      message: `[${err.providerId}] ${err.message} 请调用 login 工具开始登录流程。`,
     };
   }
   if (err instanceof UnsupportedError) {

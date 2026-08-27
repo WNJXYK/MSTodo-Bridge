@@ -79,33 +79,35 @@ export function registerTaskTools(server: McpServer): Map<string, ManagedProvide
   );
 
   server.registerTool(
-    'start_login',
+    'login',
     {
       description:
-        'Begin connecting Microsoft To Do. Returns a URL the user must open in their browser and click consent. ' +
-        'If the browser cannot reach the local machine (remote/hosted MCP), the user should copy the final ' +
-        'address-bar URL after consent and you pass it to paste_callback. Call login_status afterwards.',
-      inputSchema: {},
+        'Connect Microsoft To Do. Call WITHOUT arguments to start: it returns an authorize URL for the user to open ' +
+        'and consent, plus a ready-to-relay message covering the paste-back fallback. When the user later sends you ' +
+        'a localhost callback URL from their address bar, call login AGAIN passing it as callbackUrl to finish.',
+      inputSchema: {
+        callbackUrl: z
+          .string()
+          .optional()
+          .describe('用户粘贴的授权后地址栏完整 URL(含 code 与 state)。传此参数=完成登录;不传=开始登录'),
+      },
     },
-    async () =>
-      call(async () => {
-        const p = loginTargetProvider(registry);
-        return loginManagerFor(p).start();
-      }),
-  );
-
-  server.registerTool(
-    'paste_callback',
-    {
-      description:
-        'Finish login when the browser redirect cannot reach this machine: pass the full localhost callback URL ' +
-        'the user copied from the address bar after consenting.',
-      inputSchema: { url: z.string().min(1).describe('完整回调地址，含 code 与 state 参数') },
-    },
-    async ({ url }) => {
+    async ({ callbackUrl }) => {
       try {
         const p = loginTargetProvider(registry);
-        const out = await loginManagerFor(p).paste(url);
+        const mgr = loginManagerFor(p);
+        if (!callbackUrl) {
+          const start = await mgr.start();
+          const fallback = start.localListener
+            ? ''
+            : '\n\n如果浏览器打开后最终跳到 localhost 且页面报错(远程环境属正常现象):把那时地址栏的完整 URL 复制发给用户确认,再调用 login 并传入 callbackUrl 参数完成连接。';
+          return json({
+            ...start,
+            userMessage:
+              `请打开下面的链接并用你的微软个人账户登录授权:\n${start.authorizeUrl}${fallback}\n\n完成后我会自动检测连接状态。`,
+          });
+        }
+        const out = await mgr.paste(callbackUrl);
         if (!out.ok) return fail(new Error(out.message));
         return json({ ok: true, message: out.message });
       } catch (err) {

@@ -33,8 +33,8 @@ claude mcp add -s user taskbridge -- npx -y mstodo-bridge
 
 ## 特性
 
-- **对话内登录** —— 无需注册 OAuth 应用、无需网页控制台:Claude 调用 `start_login` 给你一条链接,点一下同意即完成;刷新令牌自动续期
-- **远程可连** —— 浏览器回不到服务器(容器/云部署)时,把地址栏 URL 粘贴回对话,`paste_callback` 完成交换
+- **对话内登录** —— 无需注册 OAuth 应用、无需网页控制台:Claude 调用 `login` 给你一条链接,点一下同意即完成;刷新令牌自动续期
+- **远程可连** —— 浏览器回不到服务器(容器/云部署)时,把地址栏 URL 粘贴回对话,还是同一个 `login` 工具完成交换
 - **内置公共客户端** —— OAuth 客户端 ID 随包分发(与 VS Code、Azure CLI 同模式),个人账户开箱即用
 - **双运行模式** —— stdio 供本地客户端直连;`--http` 提供 Bearer 端点与 Web 管理台,适配 Hugging Face Spaces 等托管环境
 - **国内友好** —— 内置 http/https 出站代理配置(含连通性实测),`login.microsoftonline.com` 直连不稳也能用
@@ -49,15 +49,14 @@ claude mcp add -s user taskbridge -- npx -y mstodo-bridge
 
 > 看看我的清单 · 把 X 加到"科研学术",周五截止 · 搜含"论文"的任务 · 完成第 3 条
 
-## MCP 工具(15 个)
+## MCP 工具(14 个)
 
 **账户与登录**
 
 | 工具 | 参数 | 说明 |
 |---|---|---|
+| `login` | `callbackUrl?` | **一个工具走完登录**:不带参数=开始,返回授权链接与给用户的话术(含本机回调监听);带上用户粘贴的地址栏 URL=完成交换(远程场景) |
 | `login_status` | — | 是否已连接、登录是否进行中及剩余秒数 |
-| `start_login` | — | 开始登录:返回授权链接并在本机随机端口挂回调监听 |
-| `paste_callback` | `url` | 粘贴授权后地址栏完整 URL,完成令牌交换(远程/无回调场景) |
 | `list_providers` | — | 列出 provider 及其连接状态、能力声明 |
 
 **清单**
