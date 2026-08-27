@@ -4,3 +4,4 @@ dist-test/
 *.log
 .smoke/
 .DS_Store
+*.tgz
