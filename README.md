@@ -1,4 +1,4 @@
-# mstodo-bridge
+# Microsoft TODO Bridge
 
 [![npm](https://img.shields.io/npm/v/mstodo-bridge)](https://www.npmjs.com/package/mstodo-bridge)
 [![license](https://img.shields.io/npm/l/mstodo-bridge)](./LICENSE)
