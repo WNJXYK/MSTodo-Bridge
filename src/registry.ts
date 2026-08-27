@@ -25,7 +25,7 @@ export function resolveProvider(
   if (ready.length === 1) return ready[0]!;
   if (ready.length === 0) {
     throw new AuthError(
-      `No provider is connected yet. Open the web GUI (\`taskbridge-mcp --http\`), connect Microsoft To Do there, or pass an explicit provider id (${ids.join(', ')}).`,
+      `No provider is connected yet. Open the web GUI (\`mstodo-bridge --http\`), connect Microsoft To Do there, or pass an explicit provider id (${ids.join(', ')}).`,
       'registry',
     );
   }

@@ -236,7 +236,7 @@ export class AdminApp {
     if (!this.mcpTokenValid(req)) {
       res
         .writeHead(401, {
-          'WWW-Authenticate': `Bearer realm="taskbridge-mcp", resource_metadata="${this.publicBaseUrl()}/.well-known/oauth-protected-resource"`,
+          'WWW-Authenticate': `Bearer realm="mstodo-bridge", resource_metadata="${this.publicBaseUrl()}/.well-known/oauth-protected-resource"`,
           'Content-Type': 'application/json',
         })
         .end(JSON.stringify({ error: 'invalid_token', error_description: 'Missing or invalid bearer token. Manage it in the admin GUI.' }));
@@ -615,7 +615,7 @@ export function startHttpServer(opts: HttpOptions): http.Server {
   });
   server.listen(opts.port, opts.host, () => {
     const base = app.publicBaseUrl();
-    console.log(`\n  taskbridge-mcp listening on http://${opts.host}:${opts.port}`);
+    console.log(`\n  mstodo-bridge listening on http://${opts.host}:${opts.port}`);
     console.log(`  Admin GUI:    ${base}/admin`);
     console.log(`  MCP endpoint: ${base}/mcp  (Authorization: Bearer <token>)`);
     console.log(`  OAuth callback: ${base}/oauth/mstodo/callback`);

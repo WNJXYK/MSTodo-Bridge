@@ -41,7 +41,7 @@ interface MsAuthFile {
 const GRAPH_BASE = process.env.TASKBRIDGE_GRAPH_ENDPOINT ?? 'https://graph.microsoft.com/v1.0';
 
 /**
- * Built-in Entra public-client app id ("taskbridge-mcp").
+ * Built-in Entra public-client app id ("mstodo-bridge").
  * Public clients carry no secret, so shipping it inside a distributed open
  * source tool is standard practice (same model as VS Code / Azure CLI).
  * TASKBRIDGE_MS_CLIENT_ID overrides it for self-hosted app registrations.
@@ -180,7 +180,7 @@ export class MsTodoProvider implements TaskProvider {
     const cache = readJson<MsAuthFile>(this.tokenFile);
     if (!cache?.refreshToken) {
       throw new AuthError(
-        'No Microsoft To Do credentials found. Connect the account from the taskbridge web GUI.',
+        'No Microsoft To Do credentials found. Connect the account from the mstodo-bridge web GUI.',
         this.id,
       );
     }

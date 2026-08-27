@@ -13,7 +13,12 @@ import * as os from 'node:os';
 export function configDir(): string {
   const override = process.env.TASKBRIDGE_CONFIG_DIR;
   if (override) return override;
-  return path.join(os.homedir(), '.taskbridge-mcp');
+  const dir = path.join(os.homedir(), '.mstodo-bridge');
+  if (fs.existsSync(dir)) return dir;
+  // Compatibility with installs from the pre-rename package name.
+  const legacy = path.join(os.homedir(), '.taskbridge-mcp');
+  if (fs.existsSync(legacy)) return legacy;
+  return dir;
 }
 
 export function ensureConfigDir(): string {

@@ -14,7 +14,7 @@ import { OAuthStateStore, codeChallengeS256 } from './oauth.js';
 
 const TIMEOUT_MS = 10 * 60 * 1000;
 
-const HELP = `taskbridge-mcp auth — connect Microsoft To Do from the terminal
+const HELP = `mstodo-bridge auth — connect Microsoft To Do from the terminal
 
 Usage:
   npm run auth:mstodo          connect Microsoft To Do

@@ -1,10 +1,10 @@
 {
-  "name": "taskbridge-mcp",
+  "name": "mstodo-bridge",
   "version": "0.2.0",
   "description": "MCP server for Microsoft To Do with a built-in admin web GUI. One command to deploy, built-in OAuth client, headless paste-back linking, Windows-friendly.",
   "type": "module",
   "bin": {
-    "taskbridge-mcp": "./dist/index.js"
+    "mstodo-bridge": "./dist/index.js"
   },
   "files": [
     "dist",

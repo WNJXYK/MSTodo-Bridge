@@ -1,7 +1,7 @@
-# taskbridge-mcp
+# mstodo-bridge
 
-[![npm](https://img.shields.io/npm/v/taskbridge-mcp)](https://www.npmjs.com/package/taskbridge-mcp)
-[![license](https://img.shields.io/npm/l/taskbridge-mcp)](./LICENSE)
+[![npm](https://img.shields.io/npm/v/mstodo-bridge)](https://www.npmjs.com/package/mstodo-bridge)
+[![license](https://img.shields.io/npm/l/mstodo-bridge)](./LICENSE)
 
 一个 MCP(Model Context Protocol)服务器,把 **Microsoft To Do** 接进 Claude Desktop、Claude Code、Cursor 等任意 MCP 客户端。
 
@@ -13,7 +13,7 @@ Claude / Cursor / 任意 MCP 客户端
         │  stdio 或 Streamable HTTP (Bearer)
         ▼
 ┌──────────────────────────────────────────┐
-│              taskbridge-mcp              │
+│              mstodo-bridge              │
 │                                          │
 │  login_status · start_login · paste_…    │
 │  list_tasks · create_task · search_tasks │
@@ -36,7 +36,7 @@ Claude / Cursor / 任意 MCP 客户端
   "mcpServers": {
     "taskbridge": {
       "command": "npx",
-      "args": ["-y", "taskbridge-mcp"]
+      "args": ["-y", "mstodo-bridge"]
     }
   }
 }
@@ -45,7 +45,7 @@ Claude / Cursor / 任意 MCP 客户端
 ### Claude Code
 
 ```bash
-claude mcp add -s user taskbridge -- npx -y taskbridge-mcp
+claude mcp add -s user taskbridge -- npx -y mstodo-bridge
 ```
 
 重启客户端,然后直接说:
@@ -69,7 +69,7 @@ Claude 会调用 `start_login` 并给你一条链接 → 浏览器打开 → 用
 ## 可选:Web 管理台
 
 ```bash
-npx taskbridge-mcp --http        # 默认 http://127.0.0.1:46377/admin
+npx mstodo-bridge --http        # 默认 http://127.0.0.1:46377/admin
 ```
 
 - 首次启动打印**管理密码**与 **MCP Bearer 令牌**(仅显示一次,均只存 scrypt 哈希)
@@ -84,11 +84,11 @@ claude mcp add -s user --transport http taskbridge http://127.0.0.1:46377/mcp --
 ## 部署到服务器 / Hugging Face Spaces
 
 ```bash
-PORT=7860 HOST=0.0.0.0 PUBLIC_BASE_URL=https://<user>-<space>.hf.space npx taskbridge-mcp --http
+PORT=7860 HOST=0.0.0.0 PUBLIC_BASE_URL=https://<user>-<space>.hf.space npx mstodo-bridge --http
 ```
 
 - `PUBLIC_BASE_URL` 决定管理台里展示的回调地址;浏览器授权后会跳到**用户本机**的 localhost —— 页面打不开是预期的,把地址栏 URL 粘进管理台(或让 Claude 调 `paste_callback`)即可
-- 数据目录默认 `~/.taskbridge-mcp`,HF 等临时磁盘请挂持久卷或用环境变量保存状态
+- 数据目录默认 `~/.mstodo-bridge`,HF 等临时磁盘请挂持久卷或用环境变量保存状态
 - `ADMIN_PASSWORD` 可预设管理密码;`PORT`/`HOST` 与 CLI 参数等价
 
 ## 环境变量
@@ -99,12 +99,12 @@ PORT=7860 HOST=0.0.0.0 PUBLIC_BASE_URL=https://<user>-<space>.hf.space npx taskb
 | `TASKBRIDGE_MS_CLIENT_ID` | 覆盖内置的 Entra 公共客户端应用 ID |
 | `TASKBRIDGE_MS_AUTHORITY` | 授权端点租户(默认 `/common`,个人账户专用可设 `/consumers`) |
 | `TASKBRIDGE_PROXY` / `HTTPS_PROXY` | 出站代理(仅 http/https;SOCKS 请填代理软件的混合端口) |
-| `TASKBRIDGE_CONFIG_DIR` | 凭据存储目录(默认 `~/.taskbridge-mcp`) |
+| `TASKBRIDGE_CONFIG_DIR` | 凭据存储目录(默认 `~/.mstodo-bridge`;更名前版本的 `~/.taskbridge-mcp` 自动兼容) |
 | `PORT` / `HOST` / `PUBLIC_BASE_URL` | 部署端口、绑定地址与对外地址 |
 
 ## 安全设计
 
-- **内置应用 ID 是公共客户端**,不含任何密钥 —— 这与 VS Code、Azure CLI 同一模式,可放心随开源包分发;你在自己机器上产生的刷新令牌只落在本地 `~/.taskbridge-mcp`,权限仅为你的待办读写
+- **内置应用 ID 是公共客户端**,不含任何密钥 —— 这与 VS Code、Azure CLI 同一模式,可放心随开源包分发;你在自己机器上产生的刷新令牌只落在本地 `~/.mstodo-bridge`,权限仅为你的待办读写
 - 管理密码与 MCP 令牌仅存 scrypt 哈希,校验恒定时间比较;登录按 IP 限速;会话 Cookie HMAC 签名;管理台带严格 CSP,无第三方资源
 - OAuth 使用 PKCE(S256)+ 一次性 state(10 分钟 TTL),刷新令牌过期/吊销时自动清除并提示重连
 
@@ -118,7 +118,7 @@ PORT=7860 HOST=0.0.0.0 PUBLIC_BASE_URL=https://<user>-<space>.hf.space npx taskb
 ## 开发
 
 ```bash
-git clone https://github.com/wnjxyk/taskbridge-mcp && cd taskbridge-mcp
+git clone https://github.com/wnjxyk/mstodo-bridge && cd mstodo-bridge
 npm install
 npm run build && npm test   # 40+ 单元测试
 npm start -- --http --open  # 本地起管理台

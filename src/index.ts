@@ -29,7 +29,7 @@ function parseArgs(argv: string[]): CliArgs {
     else if (a === '--host') args.host = argv[++i]!;
     else if (a === '--public-url') args.publicUrl = argv[++i]!;
     else if (a === '--version' || a === '-v') {
-      console.log('taskbridge-mcp 0.2.0');
+      console.log('mstodo-bridge 0.2.0');
       process.exit(0);
     } else if (a === '--help' || a === '-h') {
       printHelp();
@@ -44,11 +44,11 @@ function parseArgs(argv: string[]): CliArgs {
 }
 
 function printHelp(): void {
-  console.log(`taskbridge-mcp — MCP server for Microsoft To Do
+  console.log(`mstodo-bridge — MCP server for Microsoft To Do
 
 Usage:
-  taskbridge-mcp                 stdio MCP server (for Claude Desktop, Cursor, ...)
-  taskbridge-mcp --http          HTTP server with admin web GUI
+  mstodo-bridge                 stdio MCP server (for Claude Desktop, Cursor, ...)
+  mstodo-bridge --http          HTTP server with admin web GUI
                                 (first run prints the admin password and MCP token)
 
 Options:
@@ -65,7 +65,7 @@ Options:
 Environment:
   ADMIN_PASSWORD                  admin GUI password (otherwise generated on first run)
   TASKBRIDGE_MS_CLIENT_ID         override the built-in Entra public-client app id
-  TASKBRIDGE_CONFIG_DIR           config/token storage dir (default ~/.taskbridge-mcp)
+  TASKBRIDGE_CONFIG_DIR           config/token storage dir (default ~/.mstodo-bridge)
   TASKBRIDGE_PROXY / HTTPS_PROXY  outbound proxy for Graph/login endpoints`);
 }
 
@@ -104,7 +104,7 @@ async function main(): Promise<void> {
   const connected = providerStatuses(registry).filter((p) => p.connected);
   if (connected.length === 0) {
     console.error(
-      'taskbridge-mcp: Microsoft To Do not connected yet — no setup needed. In your chat, ask the assistant to connect it; it will call the start_login tool and give you a link.',
+      'mstodo-bridge: Microsoft To Do not connected yet — no setup needed. In your chat, ask the assistant to connect it; it will call the start_login tool and give you a link.',
     );
   }
   const transport = new StdioServerTransport();
