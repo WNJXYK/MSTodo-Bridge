@@ -2,6 +2,7 @@
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { createTaskBridgeServer } from './server.js';
 import { startHttpServer } from './httpserver.js';
+import { VERSION } from './version.js';
 import { providerStatuses } from './registry.js';
 import { spawn } from 'node:child_process';
 
@@ -29,7 +30,7 @@ function parseArgs(argv: string[]): CliArgs {
     else if (a === '--host') args.host = argv[++i]!;
     else if (a === '--public-url') args.publicUrl = argv[++i]!;
     else if (a === '--version' || a === '-v') {
-      console.log('mstodo-bridge 0.2.0');
+      console.log(`mstodo-bridge ${VERSION}`);
       process.exit(0);
     } else if (a === '--help' || a === '-h') {
       printHelp();
@@ -104,7 +105,7 @@ async function main(): Promise<void> {
   const connected = providerStatuses(registry).filter((p) => p.connected);
   if (connected.length === 0) {
     console.error(
-      'mstodo-bridge: Microsoft To Do not connected yet — no setup needed. In your chat, ask the assistant to connect it; it will call the start_login tool and give you a link.',
+      'mstodo-bridge: Microsoft To Do not connected yet — no setup needed. In your chat, ask the assistant to connect it; it will call the login tool and give you a link.',
     );
   }
   const transport = new StdioServerTransport();

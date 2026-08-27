@@ -3,7 +3,8 @@ import { registerTaskTools } from './tools.js';
 import type { ManagedProvider } from './registry.js';
 
 export const SERVER_NAME = 'mstodo-bridge';
-export const SERVER_VERSION = '0.2.0';
+import { VERSION } from './version.js';
+export const SERVER_VERSION = VERSION;
 
 export interface TaskBridgeServer {
   server: McpServer;

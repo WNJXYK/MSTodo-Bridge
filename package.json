@@ -1,6 +1,6 @@
 {
   "name": "mstodo-bridge",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "MCP server for Microsoft To Do with a built-in admin web GUI. One command to deploy, built-in OAuth client, headless paste-back linking, Windows-friendly.",
   "type": "module",
   "bin": {

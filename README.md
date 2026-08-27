@@ -66,13 +66,14 @@ npx mstodo-bridge --http --open
 
 两种方式产生的凭据完全相同(`~/.mstodo-bridge`),混用随意。
 
-## MCP 工具(14 个)
+## MCP 工具(15 个)
 
 **账户与登录**
 
 | 工具 | 参数 | 说明 |
 |---|---|---|
 | `login` | `callbackUrl?` | **一个工具走完登录**:不带参数=开始,返回授权链接与给用户的话术(含本机回调监听);带上用户粘贴的地址栏 URL=完成交换(远程场景) |
+| `logout` | — | 断开账户:删除本地令牌与进行中的登录(微软侧授权需到 account.microsoft.com 撤销) |
 | `login_status` | — | 是否已连接、登录是否进行中及剩余秒数 |
 | `list_providers` | — | 列出 provider 及其连接状态、能力声明 |
 

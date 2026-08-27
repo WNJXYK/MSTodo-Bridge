@@ -65,6 +65,30 @@ export function registerTaskTools(server: McpServer): Map<string, ManagedProvide
   const registry = createRegistry();
 
   server.registerTool(
+    'logout',
+    {
+      description:
+        'Disconnect Microsoft To Do: deletes the locally stored tokens (and any pending login). ' +
+        'The Microsoft-side app consent is NOT revoked; to fully revoke, remove the app at account.microsoft.com > Privacy.',
+      inputSchema: {},
+    },
+    async () =>
+      call(async () => {
+        const p = loginTargetProvider(registry);
+        const wasConnected = p.isAuthenticated();
+        p.disconnect();
+        loginManagers.get(p.id)?.cancel();
+        return {
+          ok: true,
+          wasConnected,
+          message: wasConnected
+            ? '已断开:本地令牌已删除。要彻底撤销授权,请到 account.microsoft.com > 隐私 > 应用和服务 移除本应用。'
+            : '本来就没有连接。',
+        };
+      }),
+  );
+
+  server.registerTool(
     'login_status',
     {
       description:
