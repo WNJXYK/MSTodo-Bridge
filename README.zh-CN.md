@@ -1,7 +1,7 @@
 # Microsoft TODO Bridge
 
 [![npm](https://img.shields.io/npm/v/mstodo-bridge)](https://www.npmjs.com/package/mstodo-bridge)
-[![license](https://img.shields.io/npm/l/mstodo-bridge)](./LICENSE)
+[![license](https://img.shields.io/npm/l/mstodo-bridge?cacheSeconds=86400)](./LICENSE)
 
 **在 Claude 里直接管理 Microsoft To Do。** 本地 MCP 服务器，登录就在对话里完成。
 
