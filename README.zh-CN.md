@@ -8,7 +8,7 @@
 [English](./README.md) | 简体中文
 
 
-## 安装
+## 📦 安装
 
 **Claude Code** —— 一行命令,全局生效:
 
@@ -33,7 +33,7 @@ claude mcp add -s user taskbridge -- npx -y mstodo-bridge
 
 安装到此为止。所有东西都在本地运行,唯一写入磁盘的是 `~/.mstodo-bridge` 里的凭据。
 
-## 登录
+## 🔑 登录
 
 直接说:
 
@@ -45,7 +45,7 @@ Claude 调用 `login` 工具给你一条授权链接 → 浏览器打开 → 微
 
 **MCP 服务器跑在远程主机上?** 授权完成后浏览器会跳到*你本机*的 `localhost` 并显示错误页 —— 这是预期行为。把地址栏完整 URL 复制回对话,Claude 调用 `login` 完成连接。无需控制台,无需手动拷贝令牌。
 
-## 工具(15 个)
+## 🧰 工具（15 个）
 
 | 工具 | 参数 | 说明 |
 |---|---|---|
@@ -65,7 +65,7 @@ Claude 调用 `login` 工具给你一条授权链接 → 浏览器打开 → 微
 | `delete_task` | `listId`, `taskId` | 删除 |
 | `move_task_between_lists` | `fromListId`, `taskId`, `toListId` | 跨清单移动(目标清单重建后删除原件) |
 
-## 配置
+## ⚙️ 配置
 
 | 环境变量 | 说明 |
 |---|---|
@@ -73,10 +73,9 @@ Claude 调用 `login` 工具给你一条授权链接 → 浏览器打开 → 微
 | `TASKBRIDGE_MS_CLIENT_ID` | 覆盖内置 OAuth 客户端 ID |
 | `TASKBRIDGE_CONFIG_DIR` | 凭据目录(默认 `~/.mstodo-bridge`;旧版 `~/.taskbridge-mcp` 自动兼容) |
 
-## 安全
+## 🔒 安全
 
-凭据只落本地(`~/.mstodo-bridge`,0600 权限)。内置 OAuth 客户端为公共客户端,包内不含任何密钥(与 VS Code、Azure CLI 同模式)。登录全程 PKCE(S256)+ 一次性 state;刷新令牌失效自动清除并引导重连。`logout` 删除本地令牌;微软侧授权需到 account.microsoft.com 撤销。
-
+凭据只落本地(`~/.mstodo-bridge`,0600 权限)。内置 OAuth 客户端为公共客户端,包内不含任何密钥(与 VS Code、Azure CLI 同模式)。登录全程 PKCE(S256)+ 一次性 state;刷新令牌失效自动清除并引导重连。`logout` 删除本地令牌，微软侧授权需到 account.microsoft.com 撤销。
 
 ## License
 

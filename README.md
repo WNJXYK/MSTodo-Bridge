@@ -3,12 +3,12 @@
 [![npm](https://img.shields.io/npm/v/mstodo-bridge)](https://www.npmjs.com/package/mstodo-bridge)
 [![license](https://img.shields.io/npm/l/mstodo-bridge)](./LICENSE)
 
-**Manage your Microsoft To Do from Claude.** A local MCP server — zero-config install, sign-in happens inside the chat.
+**Manage your Microsoft To Do from Claude.** A local MCP server — sign-in happens inside the chat.
 
 English | [简体中文](./README.zh-CN.md)
 
 
-## Install
+## 📦 Install
 
 **Claude Code** — one line, all projects:
 
@@ -33,7 +33,7 @@ claude mcp add -s user taskbridge -- npx -y mstodo-bridge
 
 That is the whole install. Everything runs locally; the only files written are your credentials in `~/.mstodo-bridge`.
 
-## Sign in
+## 🔑 Sign in
 
 Just say:
 
@@ -45,7 +45,7 @@ Claude calls the `login` tool and hands you a link → open it → consent with 
 
 **Running the MCP server on a remote host?** The consent redirect lands on *your* machine's `localhost` and shows an error page — expected. Copy that address-bar URL into the chat; Claude calls `login` with it to finish. No console, no tokens to copy.
 
-## Tools (15)
+## 🧰 Tools (15)
 
 | Tool | Args | Description |
 |---|---|---|
@@ -65,7 +65,7 @@ Claude calls the `login` tool and hands you a link → open it → consent with 
 | `delete_task` | `listId`, `taskId` | Delete |
 | `move_task_between_lists` | `fromListId`, `taskId`, `toListId` | Recreate in target list, delete the original |
 
-## Configuration
+## ⚙️ Configuration
 
 | Env | Purpose |
 |---|---|
@@ -73,7 +73,7 @@ Claude calls the `login` tool and hands you a link → open it → consent with 
 | `TASKBRIDGE_MS_CLIENT_ID` | Override the built-in OAuth client id |
 | `TASKBRIDGE_CONFIG_DIR` | Credential dir (default `~/.mstodo-bridge`; legacy `~/.taskbridge-mcp` is picked up automatically) |
 
-## Security
+## 🔒 Security
 
 Credentials stay local (`~/.mstodo-bridge`, mode 0600). The OAuth client is a public client — no secret ships in the package (same model as VS Code / Azure CLI). Sign-in uses PKCE (S256) with one-time state; expired refresh tokens are wiped and flagged for re-login. `logout` removes local tokens; Microsoft-side consent is revoked at account.microsoft.com.
 
