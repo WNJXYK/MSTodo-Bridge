@@ -3,11 +3,10 @@
 [![npm](https://img.shields.io/npm/v/mstodo-bridge)](https://www.npmjs.com/package/mstodo-bridge)
 [![license](https://img.shields.io/npm/l/mstodo-bridge)](./LICENSE)
 
-**在 Claude 里直接管理 Microsoft To Do。** 本地 MCP 服务器,零配置安装,登录就在对话里完成。
+**在 Claude 里直接管理 Microsoft To Do。** 本地 MCP 服务器，登录就在对话里完成。
 
 [English](./README.md) | 简体中文
 
-![mstodo-bridge 演示](https://raw.githubusercontent.com/WNJXYK/MSTodo-Bridge/main/docs/demo.svg)
 
 ## 安装
 

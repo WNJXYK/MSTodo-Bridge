@@ -7,7 +7,6 @@
 
 English | [简体中文](./README.zh-CN.md)
 
-![mstodo-bridge in action](https://raw.githubusercontent.com/WNJXYK/MSTodo-Bridge/main/docs/demo.svg)
 
 ## Install
 
