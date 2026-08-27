@@ -20,6 +20,16 @@ function loginManagerFor(p: ManagedProvider): LoginManager {
   return m;
 }
 
+/**
+ * Login tools must reach the provider WITHOUT the connected-only gate of
+ * resolveProvider — before first login nothing is authenticated by design.
+ */
+function loginTargetProvider(registry: Map<string, ManagedProvider>): ManagedProvider {
+  const first = registry.values().next();
+  if (first.done) throw new Error('No provider configured.');
+  return first.value;
+}
+
 function json(data: unknown) {
   return { content: [{ type: 'text' as const, text: JSON.stringify(data, null, 2) }] };
 }
@@ -63,7 +73,7 @@ export function registerTaskTools(server: McpServer): Map<string, ManagedProvide
     },
     async () =>
       call(async () => {
-        const p = resolveProvider(registry, undefined);
+        const p = loginTargetProvider(registry);
         return loginManagerFor(p).status();
       }),
   );
@@ -79,7 +89,7 @@ export function registerTaskTools(server: McpServer): Map<string, ManagedProvide
     },
     async () =>
       call(async () => {
-        const p = resolveProvider(registry, undefined);
+        const p = loginTargetProvider(registry);
         return loginManagerFor(p).start();
       }),
   );
@@ -94,7 +104,7 @@ export function registerTaskTools(server: McpServer): Map<string, ManagedProvide
     },
     async ({ url }) => {
       try {
-        const p = resolveProvider(registry, undefined);
+        const p = loginTargetProvider(registry);
         const out = await loginManagerFor(p).paste(url);
         if (!out.ok) return fail(new Error(out.message));
         return json({ ok: true, message: out.message });
