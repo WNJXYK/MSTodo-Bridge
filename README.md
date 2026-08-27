@@ -6,9 +6,30 @@
 
 **在 Claude 里直接管理 Microsoft To Do。** 一个 MCP 服务器,零配置安装,登录就在对话里完成。
 
+## 快速开始
+
+**Claude Code**(一行加入,全局生效):
+
 ```bash
 claude mcp add -s user taskbridge -- npx -y mstodo-bridge
 ```
+
+**Claude Desktop**:编辑配置文件(Windows `%APPDATA%\Claude\claude_desktop_config.json`,macOS `~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "taskbridge": {
+      "command": "npx",
+      "args": ["-y", "mstodo-bridge"]
+    }
+  }
+}
+```
+
+**Cursor / 其它 MCP 客户端**:同样以 `npx -y mstodo-bridge` 作为 stdio 命令添加。
+
+重启客户端即完成安装 —— 不需要注册任何 OAuth 应用,也不需要打开网页控制台。
 
 ## 特性
 
