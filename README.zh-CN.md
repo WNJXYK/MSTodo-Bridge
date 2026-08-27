@@ -77,14 +77,6 @@ Claude 调用 `login` 工具给你一条授权链接 → 浏览器打开 → 微
 
 凭据只落本地(`~/.mstodo-bridge`,0600 权限)。内置 OAuth 客户端为公共客户端,包内不含任何密钥(与 VS Code、Azure CLI 同模式)。登录全程 PKCE(S256)+ 一次性 state;刷新令牌失效自动清除并引导重连。`logout` 删除本地令牌;微软侧授权需到 account.microsoft.com 撤销。
 
-## 开发
-
-```bash
-git clone https://github.com/WNJXYK/MSTodo-Bridge && cd MSTodo-Bridge
-npm install && npm run build && npm test
-```
-
-Issue 与 PR 欢迎提交至 [GitHub](https://github.com/WNJXYK/MSTodo-Bridge/issues)。
 
 ## License
 

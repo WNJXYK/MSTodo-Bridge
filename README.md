@@ -77,14 +77,6 @@ Claude calls the `login` tool and hands you a link → open it → consent with 
 
 Credentials stay local (`~/.mstodo-bridge`, mode 0600). The OAuth client is a public client — no secret ships in the package (same model as VS Code / Azure CLI). Sign-in uses PKCE (S256) with one-time state; expired refresh tokens are wiped and flagged for re-login. `logout` removes local tokens; Microsoft-side consent is revoked at account.microsoft.com.
 
-## Development
-
-```bash
-git clone https://github.com/WNJXYK/MSTodo-Bridge && cd MSTodo-Bridge
-npm install && npm run build && npm test
-```
-
-Issues and PRs welcome at [GitHub](https://github.com/WNJXYK/MSTodo-Bridge/issues).
 
 ## License
 
